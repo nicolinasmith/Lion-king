@@ -26,6 +26,11 @@ namespace Lion_king
             InitializeComponent();
         }
 
+        /* CONNECTION: Lägg i "Manage user secrets"
+           "ConnectionStrings": {
+            "develop": "Server=localhost;Port=5432;User ID=lionking_user;Password=lejonkungen;Database=Lion king;"
+        }*/
+
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             DbRepository db = new();
