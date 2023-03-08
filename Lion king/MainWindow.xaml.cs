@@ -35,5 +35,6 @@ namespace Lion_king
         {
             DbRepository db = new();
         }
+
     }
 }

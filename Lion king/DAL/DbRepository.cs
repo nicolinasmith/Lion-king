@@ -17,6 +17,7 @@ namespace Lion_king.DAL
         {
             var config = new ConfigurationBuilder().AddUserSecrets<DbRepository>().Build();
             _connectionString = config.GetConnectionString("develop");
+
         }
     }
 }
