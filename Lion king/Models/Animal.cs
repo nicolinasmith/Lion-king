@@ -12,6 +12,6 @@ namespace Lion_king.Models
 
         public string name { get; set; }
 
-        public Species Species { get; set; } //species_id?
+        public Species Species { get; set; } //species_id? testar ändra
     }
 }
