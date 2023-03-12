@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Lion_king
 {
@@ -29,6 +30,7 @@ namespace Lion_king
         }
 
         DbRepository db = new();
+
 
         #region Hämta information
         //hämta djur (m. art och klass)
@@ -80,47 +82,57 @@ namespace Lion_king
         //lägg till art
         private async void btnAddSpecies_Click(object sender, RoutedEventArgs e)
         {
-            string thisSpecie = txtBox1.Text;
+            var thisSpecie = txtBox1.Text;
+            var latin = txtBox2.Text;
 
-            var newSpecie = new Species()
-            {
-                Common_name = thisSpecie,
-            };
+            var classs = (Class)cbo.SelectedItem;
 
-            try
+            if (cbo.SelectedItem == null || txtBox1.Text == null)
             {
-                await db.AddSpecies(newSpecie);
+                MessageBox.Show("För att lägga till en ny art måste du uppge artens namn och välja vilken klass den tillhör.");
+            }     
+            else
+            {
+                var newSpecie = new Species()
+                {
+                    Common_name = thisSpecie,
+                    Latin_name = latin,
+                    Class = classs
+                };
 
-                MessageBox.Show($"Du har nu lagt till en ny art.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                try
+                {
+                    await db.AddSpecies(newSpecie);
+
+                    MessageBox.Show($"Du har nu lagt till en ny art.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
         //lägg till djur
         private async void btnAddAnimal_Click(object sender, RoutedEventArgs e)
         {
-            //string name = txtBox1.Text;
-            //string species = txtBox2.Text;
+            string name = txtBox1.Text;
+            string species = txtBox2.Text;
 
-            //var animal = new Animal()
-            //{
-            //    Name = name,
-            //    Species = "Masai Lion"
-            //};
+            var animal = new Animal()
+            {
+                Name = name,
+            };
 
-            //try
-            //{
-            //    await db.AddAnimal(animal);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+            try
+            {
+                await db.AddAnimal(animal);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
-
         #endregion
 
 
@@ -128,7 +140,7 @@ namespace Lion_king
         private async void btnnewSpecie_Checked(object sender, RoutedEventArgs e)
         {
             var classes = await db.GetClass();
-            lstboxClass.ItemsSource = classes;
+            cbo.ItemsSource = classes;
         }
 
 
@@ -148,6 +160,28 @@ namespace Lion_king
             //var searchanimals = await db.GetAnimalByName();
 
             //listbox.ItemsSource = searchanimals;
+        }
+
+        private async void btnnewAnimal_Checked(object sender, RoutedEventArgs e)
+        {
+            var species = await db.GetSpecies();
+            lstboxClass.ItemsSource = species;
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Class classs = (Class)listbox.SelectedItem;
+
+            try
+            {
+                await db.DeleteClass(classs);
+
+                MessageBox.Show($"Du har nu tagit bort {classs.Class_name} som klass.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

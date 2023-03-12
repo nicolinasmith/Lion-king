@@ -18,7 +18,7 @@ namespace Lion_king.Models
 
         public override string ToString()
         {
-            return $"{Name} - {Species}";
+            return $"{Name} {Species}";
         }
     }
 }

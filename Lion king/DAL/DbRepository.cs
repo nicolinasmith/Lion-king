@@ -136,7 +136,8 @@ namespace Lion_king.DAL
             {
                 classs = new Class()
                 {
-                    Class_name = (string)reader["class_name"],
+                    Class_id = (int)reader["class_id"],
+                    Class_name = (string)reader["class_name"]
                 };
                 classes.Add(classs);
             }
@@ -242,20 +243,21 @@ namespace Lion_king.DAL
 
        
         //lägg till art
-        public async Task<Species> AddSpecies(Species thisSpecie)
+        public async Task<Species> AddSpecies(Species specie)
         {
             try
             {
-                //hur lyckas man lägga i art med klass? eller flera värden????
-                string stmt = $"insert into class(common_name, class_id) values (@name)";
+                //hur lyckas man lägga i art med klass?
+                string stmt = $"insert into species(common_name, latin_name, class_id) values (@name, @latin, @class)";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("name", thisSpecie.Common_name);
-                command.Parameters.AddWithValue("name", thisSpecie.Common_name);
+                command.Parameters.AddWithValue("name", specie.Common_name);
+                command.Parameters.AddWithValue("latin", specie.Latin_name);
+                command.Parameters.AddWithValue("class", specie.Class.Class_id);
                 await command.ExecuteNonQueryAsync();
 
-                return thisSpecie;
+                return specie;
             }
             catch (PostgresException ex)
             {
@@ -276,7 +278,43 @@ namespace Lion_king.DAL
 
                 throw new Exception(mess, ex);
             }
-        } 
+        }
+
+        public async Task<Class> DeleteClass(Class classs)
+        {
+            try
+            {
+                // hur formulerar man detta?
+                string stmt = $"delete from class where class_id = {classs.Class_id}";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("class_id", classs.Class_id);
+                await command.ExecuteNonQueryAsync();
+
+                return classs;
+            }
+            catch (PostgresException ex)
+            {
+                string mess = "Det blev fel i databasen. Prova igen.";
+                string errorCode = ex.SqlState;
+
+                switch (errorCode)
+                {
+                    case PostgresErrorCodes.StringDataRightTruncation:
+                        mess = "Namnet är för långt. Max 25 tecken.";
+                        break;
+                    case PostgresErrorCodes.UniqueViolation:
+                        mess = "Namnet på kategorin är inte unikt.";
+                        break;
+                    default:
+                        break;
+                }
+
+                throw new Exception(mess, ex);
+            }
+        }
+
         #endregion
 
 

@@ -15,7 +15,7 @@ namespace Lion_king.Models
 
         public override string ToString()
         {
-            return $"{Class_name}";
+            return Class_name;
         }
     }
 }

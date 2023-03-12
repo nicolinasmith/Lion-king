@@ -19,7 +19,7 @@ namespace Lion_king.Models
 
         public override string ToString()
         {
-            return $"{Common_name} - {Latin_name} - {Class}";
+            return $"{Common_name} {Latin_name} {Class}";
         }
 
     }
