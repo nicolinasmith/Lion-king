@@ -233,7 +233,7 @@ namespace Lion_king
         private async void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             Class classs = (Class)listbox.SelectedItem;
-            Species species = (Species)listbox.SelectedItem;
+            //Species species = (Species)listbox.SelectedItem;
 
             if (listbox.SelectedItem == classs)
             {
@@ -249,19 +249,19 @@ namespace Lion_king
                 }
             }
 
-            if (listbox.SelectedItem == species)
-            {
-                try
-                {
-                    await db.DeleteSpecies(species);
+            //if (listbox.SelectedItem == species)
+            //{
+            //    try
+            //    {
+            //        await db.DeleteSpecies(species);
 
-                    MessageBox.Show($"Du har nu tagit bort {species.Common_name} som klass.");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
+            //        MessageBox.Show($"Du har nu tagit bort {species.Common_name} som klass.");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show(ex.Message);
+            //    }
+            //}
 
         }
 

@@ -320,14 +320,14 @@ namespace Lion_king.DAL
             try
             {
                 // hur formulerar man detta?
-                string stmt = $"delete from class where specie_id = {specie.Specie_id}";
+                string stmt = $"delete from class where species_id = {specie.Species_id}";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
-                command.Parameters.AddWithValue("class_id", classs.Class_id);
+                command.Parameters.AddWithValue("species_id", specie.Species_id);
                 await command.ExecuteNonQueryAsync();
 
-                return classs;
+                return specie;
             }
             catch (PostgresException ex)
             {
