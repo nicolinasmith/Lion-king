@@ -57,25 +57,79 @@ namespace Lion_king
 
 
         #region Lägg till i databas
-        //lägg till klass
-        private async void btnAdd_Click(object sender, RoutedEventArgs e)
+        private async void btnAddNew_Click(object sender, RoutedEventArgs e)
         {
-            string thisClass = txtboxClass.Text;
-
-            var newClass = new Class()
+            if (radioNewClass.IsChecked == false && btnnewSpecie.IsChecked == false && btnnewAnimal.IsChecked == false) 
             {
-                Class_name = thisClass
-            };
-
-            try
-            {
-                await db.AddClass(newClass);
-
-                MessageBox.Show($"Du har nu lagt till en ny klass.");
+                MessageBox.Show("Du måste välja typ av kategori för att lägga till ett nytt objekt.");
             }
-            catch (Exception ex)
+
+            if (radioNewClass.IsChecked == true)
             {
-                MessageBox.Show(ex.Message);
+                string thisClass = txtBox2.Text;
+
+                var newClass = new Class()
+                {
+                    Class_name = thisClass
+                };
+
+                try
+                {
+                    await db.AddClass(newClass);
+
+                    MessageBox.Show($"Du har nu lagt till {newClass} som en ny klass.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            if (btnnewSpecie.IsChecked == true)
+            {
+                string specieName = txtBox1.Text;
+                string latinName = txtBox2.Text;
+
+                var chosenClass = (Class)cbo.SelectedItem;
+
+                var newSpecie = new Species()
+                {
+                    Common_name = specieName,
+                    Latin_name = latinName,
+                    Class = chosenClass
+                };
+
+                try
+                {
+                    await db.AddSpecies(newSpecie);
+
+                    MessageBox.Show($"Du har nu lagt till {newSpecie} som en ny art.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            if (btnnewAnimal.IsChecked == true)
+            {
+                string name = txtBox1.Text;
+
+                var chosenSpecie = (Species)cbo.SelectedItem;
+
+                var animal = new Animal()
+                {
+                    Name = name,
+                    Species = chosenSpecie
+                };
+
+                try
+                {
+                    await db.AddAnimal(animal);
+                    MessageBox.Show($"Du har nu lagt till {animal} som ett nytt djur.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
@@ -86,13 +140,7 @@ namespace Lion_king
             var latin = txtBox2.Text;
 
             var classs = (Class)cbo.SelectedItem;
-
-            if (cbo.SelectedItem == null || txtBox1.Text == null)
-            {
-                MessageBox.Show("För att lägga till en ny art måste du uppge artens namn och välja vilken klass den tillhör.");
-            }     
-            else
-            {
+            
                 var newSpecie = new Species()
                 {
                     Common_name = thisSpecie,
@@ -110,37 +158,66 @@ namespace Lion_king
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }
+            
         }
 
-        //lägg till djur
-        private async void btnAddAnimal_Click(object sender, RoutedEventArgs e)
-        {
-            string name = txtBox1.Text;
-            string species = txtBox2.Text;
-
-            var animal = new Animal()
-            {
-                Name = name,
-            };
-
-            try
-            {
-                await db.AddAnimal(animal);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
         #endregion
 
 
 
         private async void btnnewSpecie_Checked(object sender, RoutedEventArgs e)
         {
+            txtBox1.Clear();
+            txtBox2.Clear();
+
             var classes = await db.GetClass();
             cbo.ItemsSource = classes;
+
+            lblAdd1.Content = "Namn på art *";
+            lblAdd1.Visibility = Visibility.Visible;
+            lblAdd2.Content = "Latinskt namn";
+            lblAdd2.Visibility = Visibility.Visible;
+            lblAdd3.Content = "Välj djurklass *";
+            lblAdd3.Visibility = Visibility.Visible;
+
+            txtBox1.Visibility = Visibility.Visible;
+            txtBox2.Visibility= Visibility.Visible;
+            cbo.Visibility = Visibility.Visible;
+        }
+
+        private async void btnnewAnimal_Checked(object sender, RoutedEventArgs e)
+        {
+            txtBox1.Clear();
+            txtBox2.Clear();
+
+            var species = await db.GetSpecies();
+            cbo.ItemsSource = species;
+
+            lblAdd1.Content = "Namn på djur";
+            lblAdd1.Visibility= Visibility.Visible;
+            lblAdd3.Content = "Välj djurart *";
+            lblAdd3.Visibility= Visibility.Visible;
+
+            cbo.Visibility= Visibility.Visible;
+            txtBox1.Visibility = Visibility.Visible;
+
+            txtBox2.Visibility = Visibility.Hidden;
+            lblAdd2.Visibility = Visibility.Hidden;
+        }
+
+        private void radioNewClass_Checked(object sender, RoutedEventArgs e)
+        {
+            txtBox1.Clear();
+            txtBox2.Clear();
+
+            lblAdd2.Content = "Namn på klass *";
+            lblAdd2.Visibility= Visibility.Visible;
+            txtBox2.Visibility= Visibility.Visible;
+
+            txtBox1.Visibility = Visibility.Hidden;
+            cbo.Visibility = Visibility.Hidden;
+            lblAdd1.Visibility = Visibility.Hidden;
+            lblAdd3.Visibility = Visibility.Hidden;
         }
 
 
@@ -153,35 +230,40 @@ namespace Lion_king
             }
         }
 
-        private async void btnSearch_Click(object sender, RoutedEventArgs e)
-        {
-            //var search = txtBox1.Text;
-
-            //var searchanimals = await db.GetAnimalByName();
-
-            //listbox.ItemsSource = searchanimals;
-        }
-
-        private async void btnnewAnimal_Checked(object sender, RoutedEventArgs e)
-        {
-            var species = await db.GetSpecies();
-            lstboxClass.ItemsSource = species;
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void ButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             Class classs = (Class)listbox.SelectedItem;
+            Species species = (Species)listbox.SelectedItem;
 
-            try
+            if (listbox.SelectedItem == classs)
             {
-                await db.DeleteClass(classs);
+                try
+                {
+                    await db.DeleteClass(classs);
 
-                MessageBox.Show($"Du har nu tagit bort {classs.Class_name} som klass.");
+                    MessageBox.Show($"Du har nu tagit bort {classs.Class_name} som klass.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Exception ex)
+
+            if (listbox.SelectedItem == species)
             {
-                MessageBox.Show(ex.Message);
+                try
+                {
+                    await db.DeleteSpecies(species);
+
+                    MessageBox.Show($"Du har nu tagit bort {species.Common_name} som klass.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
+
         }
+
     }
 }

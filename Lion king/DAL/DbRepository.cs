@@ -160,6 +160,7 @@ namespace Lion_king.DAL
             {
                 specie = new Species()
                 {
+                    Species_id = (int)reader["species_id"],
                     Common_name = (string)reader["common_name"],
                     Latin_name = (string)reader["latin_name"]
                 };
@@ -176,11 +177,12 @@ namespace Lion_king.DAL
         {
             try
             {
-                string stmt = $"insert into class(name) values (@name)";
+                string stmt = $"insert into animal(name, species_id) values (@name, @species)";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
 
                 command.Parameters.AddWithValue("name", animal.Name);
+                command.Parameters.AddWithValue("species", animal.Species.Species_id);
                 await command.ExecuteNonQueryAsync();
 
                 return animal;
@@ -195,9 +197,9 @@ namespace Lion_king.DAL
                     case PostgresErrorCodes.StringDataRightTruncation:
                         mess = "Namnet är för långt. Max 25 tecken.";
                         break;
-                    case PostgresErrorCodes.UniqueViolation:
-                        mess = "Namnet på kategorin är inte unikt.";
-                        break;
+                    //case PostgresErrorCodes.UniqueViolation:
+                    //    mess = "Namnet på kategorin är inte unikt.";
+                    //    break;
                     default:
                         break;
                 }
@@ -231,7 +233,7 @@ namespace Lion_king.DAL
                         mess = "Namnet är för långt. Max 25 tecken.";
                         break;
                     case PostgresErrorCodes.UniqueViolation:
-                        mess = "Namnet på kategorin är inte unikt.";
+                        mess = "Namnet på klassen finns redan. Det måste vara unikt.";
                         break;
                     default:
                         break;
@@ -241,13 +243,11 @@ namespace Lion_king.DAL
             }
         }
 
-       
         //lägg till art
         public async Task<Species> AddSpecies(Species specie)
         {
             try
             {
-                //hur lyckas man lägga i art med klass?
                 string stmt = $"insert into species(common_name, latin_name, class_id) values (@name, @latin, @class)";
                 await using var dataSource = NpgsqlDataSource.Create(_connectionString);
                 await using var command = dataSource.CreateCommand(stmt);
@@ -270,7 +270,7 @@ namespace Lion_king.DAL
                         mess = "Namnet är för långt. Max 25 tecken.";
                         break;
                     case PostgresErrorCodes.UniqueViolation:
-                        mess = "Namnet på kategorin är inte unikt.";
+                        mess = "Namnet på arten finns redan. Det måste vara unikt.";
                         break;
                     default:
                         break;
@@ -301,8 +301,43 @@ namespace Lion_king.DAL
 
                 switch (errorCode)
                 {
-                    case PostgresErrorCodes.StringDataRightTruncation:
-                        mess = "Namnet är för långt. Max 25 tecken.";
+                    case PostgresErrorCodes.ForeignKeyViolation:
+                        mess = "Du kan inte ta bort klassen då den innehåller arter.";
+                        break;
+                    case PostgresErrorCodes.UniqueViolation:
+                        mess = "Namnet på kategorin är inte unikt.";
+                        break;
+                    default:
+                        break;
+                }
+
+                throw new Exception(mess, ex);
+            }
+        }
+
+        public async Task<Species> DeleteSpecies(Species specie)
+        {
+            try
+            {
+                // hur formulerar man detta?
+                string stmt = $"delete from class where specie_id = {specie.Specie_id}";
+                await using var dataSource = NpgsqlDataSource.Create(_connectionString);
+                await using var command = dataSource.CreateCommand(stmt);
+
+                command.Parameters.AddWithValue("class_id", classs.Class_id);
+                await command.ExecuteNonQueryAsync();
+
+                return classs;
+            }
+            catch (PostgresException ex)
+            {
+                string mess = "Det blev fel i databasen. Prova igen.";
+                string errorCode = ex.SqlState;
+
+                switch (errorCode)
+                {
+                    case PostgresErrorCodes.ForeignKeyViolation:
+                        mess = "Du kan inte ta bort klassen då den innehåller arter.";
                         break;
                     case PostgresErrorCodes.UniqueViolation:
                         mess = "Namnet på kategorin är inte unikt.";

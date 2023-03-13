@@ -8,36 +8,26 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnOK" Content="Hämta djur" HorizontalAlignment="Left" Height="24" Margin="221,164,0,0" VerticalAlignment="Top" Width="86" Click="btnOK_Click"/>
-        <ListBox x:Name="listbox" HorizontalAlignment="Left" Height="130" Margin="322,144,0,0" VerticalAlignment="Top" Width="241" MouseDoubleClick="listbox_MouseDoubleClick"/>
-        <TextBox x:Name="txtBox1" HorizontalAlignment="Left" Height="25" Margin="41,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113"/>
-        <Button x:Name="btnAddClass" Content="Lägg till ny klass" HorizontalAlignment="Left" Height="22" Margin="184,398,0,0" VerticalAlignment="Top" Width="113" Click="btnAdd_Click"/>
+        <Button x:Name="btnOK" Content="Hämta djur" HorizontalAlignment="Left" Height="24" Margin="390,156,0,0" VerticalAlignment="Top" Width="86" Click="btnOK_Click"/>
+        <ListBox x:Name="listbox" HorizontalAlignment="Left" Height="130" Margin="491,136,0,0" VerticalAlignment="Top" Width="241" MouseDoubleClick="listbox_MouseDoubleClick"/>
+        <TextBox x:Name="txtBox1" HorizontalAlignment="Left" Height="25" Margin="41,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113" Visibility="Hidden"/>
         <Button x:Name="btnClass" Content="Hämta klass" HorizontalAlignment="Left" Height="35" Margin="400,11,0,0" VerticalAlignment="Top" Width="106" Click="btnClass_Click"/>
         <Button x:Name="btnSpecies" Content="Hämta arter" HorizontalAlignment="Left" Height="35" Margin="521,11,0,0" VerticalAlignment="Top" Width="106" Click="btnSpecies_Click"/>
-        <TextBox x:Name="txtBox2" HorizontalAlignment="Left" Height="25" Margin="41,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113"/>
-        <Label Content="Art" HorizontalAlignment="Left" Height="28" Margin="41,144,0,0" VerticalAlignment="Top" Width="113"/>
-        <Label Content="Latinskt namn" HorizontalAlignment="Left" Height="28" Margin="41,197,0,0" VerticalAlignment="Top" Width="113"/>
-        <Label Content="Välja djurklass" HorizontalAlignment="Left" Height="28" Margin="41,246,0,0" VerticalAlignment="Top" Width="113"/>
-        <Button x:Name="btnAddSpecies" Content="Lägg till" HorizontalAlignment="Left" Height="27" Margin="42,320,0,0" VerticalAlignment="Top" Width="113" Click="btnAddSpecies_Click"/>
-        <TextBox x:Name="txtboxClass" HorizontalAlignment="Left" Height="25" Margin="184,368,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113"/>
+        <TextBox x:Name="txtBox2" HorizontalAlignment="Left" Height="25" Margin="41,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113" Visibility="Hidden"/>
+        <Label x:Name="lblAdd1" HorizontalAlignment="Left" Height="28" Margin="41,144,0,0" VerticalAlignment="Top" Width="113"/>
+        <Label x:Name="lblAdd2" HorizontalAlignment="Left" Height="28" Margin="41,197,0,0" VerticalAlignment="Top" Width="113"/>
+        <Label x:Name="lblAdd3" HorizontalAlignment="Left" Height="23" Margin="41,251,0,0" VerticalAlignment="Top" Width="113"/>
+        <Button x:Name="btnAddNew" Content="Lägg till" HorizontalAlignment="Left" Height="27" Margin="42,345,0,0" VerticalAlignment="Top" Width="113" Click="btnAddNew_Click"/>
+        <TextBox x:Name="txtboxClass" HorizontalAlignment="Left" Height="24" Margin="491,304,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113"/>
         <ListBox x:Name="lstboxClass" HorizontalAlignment="Left" Height="36" Margin="265,10,0,0" VerticalAlignment="Top" Width="110"/>
-        <RadioButton x:Name="btnnewSpecie" Content="Ny art" HorizontalAlignment="Left" Height="20" Margin="43,124,0,0" VerticalAlignment="Top" Width="112" Checked="btnnewSpecie_Checked"/>
-        <Button x:Name="btnAddAnimal" Content="Lägg till nytt djur" HorizontalAlignment="Left" Height="30" Margin="41,394,0,0" VerticalAlignment="Top" Width="107" Click="btnAddAnimal_Click"/>
-        <Button x:Name="btnSearch" Content="Sök" HorizontalAlignment="Left" Height="21" Margin="501,113,0,0" VerticalAlignment="Top" Width="62" Click="btnSearch_Click"/>
-        <RadioButton x:Name="btnnewAnimal" Content="Nytt djur" HorizontalAlignment="Left" Height="22" Margin="43,102,0,0" VerticalAlignment="Top" Width="112" Checked="btnnewAnimal_Checked"/>
-        <Button Content="Ta bort" HorizontalAlignment="Left" Height="22" Margin="302,398,0,0" VerticalAlignment="Top" Width="110" Click="Button_Click"/>
-        <ComboBox x:Name="cbo" HorizontalAlignment="Left" Height="24" Margin="41,274,0,0" VerticalAlignment="Top" Width="124"/>
-        <Label Content="Lägg till:" HorizontalAlignment="Left" Height="33" Margin="41,69,0,0" VerticalAlignment="Top" Width="89"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="84" Margin="584,113,0,0" VerticalAlignment="Top" Width="80">
-            <TextBox HorizontalAlignment="Center" Height="15" Margin="0,58,0,0" TextWrapping="Wrap" Text="Ta bort + uppdatera" VerticalAlignment="Top" Width="60" FontSize="6" />
-        </Border>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="71" Margin="584,203,0,0" VerticalAlignment="Top" Width="80">
-            <Label Content="Lägg till" HorizontalAlignment="Center" Height="26" Margin="0,-1,0,0" VerticalAlignment="Top" Width="60"/>
-        </Border>
-        <Label Content="Hantera" HorizontalAlignment="Left" Height="31" Margin="594,124,0,0" VerticalAlignment="Top" Width="62"/>
-        <RadioButton Content="Klass" HorizontalAlignment="Left" Height="13" Margin="221,229,0,0" VerticalAlignment="Top" Width="86"/>
-        <Label Content="Sortera efter:" HorizontalAlignment="Left" Height="27" Margin="221,197,0,0" VerticalAlignment="Top" Width="86"/>
-        <TextBox HorizontalAlignment="Left" Height="21" Margin="322,113,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"/>
-        <RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="14" Margin="322,86,0,0" VerticalAlignment="Top" Width="90"/>
+        <RadioButton x:Name="btnnewSpecie" Content="Ny art" HorizontalAlignment="Left" Height="20" Margin="41,90,0,0" VerticalAlignment="Top" Width="98" Checked="btnnewSpecie_Checked"/>
+        <RadioButton x:Name="btnnewAnimal" Content="Nytt djur" HorizontalAlignment="Left" Height="22" Margin="41,68,0,0" VerticalAlignment="Top" Width="112" Checked="btnnewAnimal_Checked"/>
+        <Button x:Name="btnDelete" Content="Ta bort" HorizontalAlignment="Left" Height="22" Margin="609,334,0,0" VerticalAlignment="Top" Width="110" Click="ButtonDelete_Click"/>
+        <ComboBox x:Name="cbo" HorizontalAlignment="Left" Height="24" Margin="41,274,0,0" VerticalAlignment="Top" Width="114" Visibility="Hidden"/>
+        <Label Content="Lägg till:" HorizontalAlignment="Left" Height="33" Margin="41,42,0,0" VerticalAlignment="Top" Width="89"/>
+        <RadioButton Content="Klass" HorizontalAlignment="Left" Height="12" Margin="390,222,0,0" VerticalAlignment="Top" Width="86"/>
+        <Label Content="Sortera efter:" HorizontalAlignment="Left" Height="26" Margin="390,190,0,0" VerticalAlignment="Top" Width="86"/>
+        <TextBox HorizontalAlignment="Left" Height="20" Margin="491,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="174"/>
+        <RadioButton x:Name="radioNewClass" Content="Ny klass" HorizontalAlignment="Left" Height="14" Margin="40,112,0,0" VerticalAlignment="Top" Width="90" Checked="radioNewClass_Checked"/>
     </Grid>
 </Window>
